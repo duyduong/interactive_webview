@@ -6,10 +6,10 @@
 Plugin that allow Flutter to communicate with a native WebView.
 
 ***Warning:***
-This is not a display WebView. This plugin is designed to make communication between Flutter and WebView javascript. You can call a Javascript function; in the other hand, you can send messgage (postMessage) from Javascript to Flutter
+This is not a display WebView. This plugin is designed to make communication between Flutter and WebView javascript. You can call a Javascript function; in the other hand, you can send messgage (`postMessage`) from Javascript to Flutter
 
-- Android: using JavascriptInterface
-- iOS: using WKUserContentController
+- Android: using `JavascriptInterface`
+- iOS: using `WKUserContentController`
 
 ## Getting Started
 
@@ -18,7 +18,7 @@ For help getting started with Flutter, view our online [documentation](http://fl
 ### How it works
 
 `InteractiveWebView` provide a singleton instance linked to one unique webview,
-so you can take control of the webview from anywhere in the app. You don't need to care where is the webview. It is hidden and automatically added to the keyWindow (iOS) and decorView (Android)
+so you can take control of the webview from anywhere in the app. You don't need to care where is the webview. It is hidden and automatically added to the `keyWindow` (iOS) and `decorView` (Android)
 
 #### Load HTML string with/without a base url
 
@@ -83,7 +83,7 @@ Both iOS and Android defined a message handler called 'native':
 - iOS: you can access this handler by using `webkit.messageHandlers.native`
 - Android: you can access this handler by using `window.native`
 
-So you only need to check which is available in the webview, for example:
+So you only need to check which one is available in the webview, for example:
 
 ```javascript
 const nativeCommunicator = typeof webkit !== 'undefined' ? webkit.messageHandlers.native : window.native;
@@ -100,11 +100,12 @@ const array = [{name: "Hello"}, 1, true, "from", "WebView!!!"];
 nativeCommunicator.postMessage(JSON.stringify(array));
 
 // send and object data
-const obj = {action: "my_action", data: "Hello from WebView!!!"};
+const obj = {action: "my_action", text: "Hello from WebView!!!", number: 1, bool: false};
 nativeCommunicator.postMessage(JSON.stringify(obj));
 
 // send a text data
 const text = "Hello from WebView!!!";
 nativeCommunicator.postMessage(text);
 ```
-To listen to post message from Flutter, you can use `didReceiveMessage`, see [Listen for events](#listen_for_events)
+
+To listen to post message from Flutter, you can use `didReceiveMessage`, see [Listen for events](#listen-for-events)
