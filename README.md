@@ -1,4 +1,4 @@
-[![pub package](https://img.shields.io/pub/v/flutter_webview_plugin.svg)](https://pub.dartlang.org/packages/interactive_webview) 
+[![pub package](https://img.shields.io/pub/v/interactive_webview.svg)](https://pub.dartlang.org/packages/interactive_webview) 
 
 
 # interactive_webview
