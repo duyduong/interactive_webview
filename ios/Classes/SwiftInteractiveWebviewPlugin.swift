@@ -11,6 +11,7 @@ enum CallMethod: String {
 
 public class SwiftInteractiveWebviewPlugin: NSObject, FlutterPlugin {
     
+    private let viewController: UIViewController
     private let configuration: WKWebViewConfiguration = WKWebViewConfiguration()
     private let webView: WKWebView
     
@@ -20,7 +21,8 @@ public class SwiftInteractiveWebviewPlugin: NSObject, FlutterPlugin {
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "interactive_webview", binaryMessenger: registrar.messenger())
-        let instance = SwiftInteractiveWebviewPlugin(withChannel: channel)
+        let viewController = registrar.messenger() as! UIViewController
+        let instance = SwiftInteractiveWebviewPlugin(withChannel: channel, viewController: viewController)
         
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
@@ -36,8 +38,9 @@ public class SwiftInteractiveWebviewPlugin: NSObject, FlutterPlugin {
         }
     }
     
-    init(withChannel channel: FlutterMethodChannel) {
+    init(withChannel channel: FlutterMethodChannel, viewController: UIViewController) {
         self.channel = channel
+        self.viewController = viewController
         webView = WKWebView(frame: .zero, configuration: configuration)
         
         super.init()
@@ -62,6 +65,7 @@ public class SwiftInteractiveWebviewPlugin: NSObject, FlutterPlugin {
         configuration.preferences = preferences
         
         configuration.userContentController.add(self, name: "native")
+        webView.isHidden = true
         webView.navigationDelegate = self
         
         UIApplication.shared.keyWindow?.addSubview(webView)
@@ -127,12 +131,11 @@ extension SwiftInteractiveWebviewPlugin: WKScriptMessageHandler {
 
 extension SwiftInteractiveWebviewPlugin: WKNavigationDelegate {
     
-    private func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         decisionHandler(decidePolicyForRequest(navigationAction.request))
     }
     
     private func decidePolicyForRequest(_ request: URLRequest) -> WKNavigationActionPolicy {
-        
         if let url = request.url {
             let link = url.absoluteString
             
@@ -151,7 +154,7 @@ extension SwiftInteractiveWebviewPlugin: WKNavigationDelegate {
         channel.invokeMethod("stateChanged", arguments: ["type": "didStart", "url": webView.url!.absoluteString])
     }
     
-    private func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         channel.invokeMethod("stateChanged", arguments: ["type": "didFinish", "url": webView.url!.absoluteString])
     }
 }
