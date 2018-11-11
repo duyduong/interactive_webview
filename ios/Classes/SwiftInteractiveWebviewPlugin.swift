@@ -67,8 +67,6 @@ public class SwiftInteractiveWebviewPlugin: NSObject, FlutterPlugin {
         configuration.userContentController.add(self, name: "native")
         webView.isHidden = true
         webView.navigationDelegate = self
-        
-        UIApplication.shared.keyWindow?.addSubview(webView)
     }
 }
 
@@ -88,6 +86,8 @@ extension SwiftInteractiveWebviewPlugin {
             let script = arguments["script"] as? String
             else { return }
         
+        validateWebView()
+        
         webView.evaluateJavaScript(script, completionHandler: nil)
     }
     
@@ -96,6 +96,8 @@ extension SwiftInteractiveWebviewPlugin {
             let arguments = call.arguments as? [String: Any],
             let html = arguments["html"] as? String
             else { return }
+        
+        validateWebView()
         
         if let baseUrlString = arguments["baseUrl"] as? String {
             webView.loadHTMLString(html, baseURL: URL(string: baseUrlString))
@@ -111,7 +113,15 @@ extension SwiftInteractiveWebviewPlugin {
             let url = URL(string: urlString)
             else { return }
         
+        validateWebView()
+        
         webView.load(URLRequest(url: url))
+    }
+    
+    private func validateWebView() {
+        if webView.superview == nil {
+            UIApplication.shared.keyWindow?.addSubview(webView)
+        }
     }
 }
 

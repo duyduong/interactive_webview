@@ -1,6 +1,6 @@
 name: interactive_webview
 description: Plugin that allow Flutter to communicate with a native WebView.
-version: 0.1.1+3
+version: 0.1.1+4
 author: Dao Duy Duong <dduy.duong@gmail.com>
 homepage: https://github.com/duyduong/interactive_webview
 
