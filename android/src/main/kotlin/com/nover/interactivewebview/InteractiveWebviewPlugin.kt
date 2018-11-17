@@ -54,6 +54,8 @@ class InteractiveWebviewPlugin(private val activity: Activity): MethodCallHandle
 
         webView.visibility = View.GONE
         webView.settings.javaScriptEnabled = true
+        webView.settings.domStorageEnabled = true
+        webView.settings.allowFileAccessFromFileURLs = true
         webView.addJavascriptInterface(JsInterface(), "native")
         webView.webViewClient = webClient
     }
