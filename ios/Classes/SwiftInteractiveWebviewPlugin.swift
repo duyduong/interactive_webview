@@ -10,8 +10,7 @@ enum CallMethod: String {
 }
 
 public class SwiftInteractiveWebviewPlugin: NSObject, FlutterPlugin {
-    
-    private let viewController: UIViewController
+  
     private let configuration: WKWebViewConfiguration = WKWebViewConfiguration()
     private let webView: WKWebView
     
@@ -21,8 +20,7 @@ public class SwiftInteractiveWebviewPlugin: NSObject, FlutterPlugin {
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "interactive_webview", binaryMessenger: registrar.messenger())
-        let viewController = registrar.messenger() as! UIViewController
-        let instance = SwiftInteractiveWebviewPlugin(withChannel: channel, viewController: viewController)
+        let instance = SwiftInteractiveWebviewPlugin(withChannel: channel)
         
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
@@ -38,9 +36,8 @@ public class SwiftInteractiveWebviewPlugin: NSObject, FlutterPlugin {
         }
     }
     
-    init(withChannel channel: FlutterMethodChannel, viewController: UIViewController) {
+    init(withChannel channel: FlutterMethodChannel) {
         self.channel = channel
-        self.viewController = viewController
         webView = WKWebView(frame: .zero, configuration: configuration)
         
         super.init()
