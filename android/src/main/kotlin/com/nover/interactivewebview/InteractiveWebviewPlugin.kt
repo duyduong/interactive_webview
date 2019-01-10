@@ -152,18 +152,18 @@ class JsInterface {
     fun postMessage(data: String?) {
         data?.let {
             val message = hashMapOf<String, Any>()
-            message["name"] = "native";
+            message["name"] = "native"
 
             try {
-                val firstChar = it.get(0)
+                val firstChar = it[0]
                 if (firstChar == '{') {
                     val jsonObj = JSONObject(it)
                     message["data"] = toMap(jsonObj)
-                }
-
-                if (firstChar == '[') {
+                } else if (firstChar == '[') {
                     val jsonArray = JSONArray(it)
                     message["data"] = toList(jsonArray)
+                } else {
+                    message["data"] = it
                 }
             } catch (e: JSONException) {
                 message["data"] = it
