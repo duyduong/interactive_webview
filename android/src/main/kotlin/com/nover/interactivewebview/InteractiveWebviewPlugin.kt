@@ -22,19 +22,17 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-
-
 enum class CallMethod {
     setOptions, evalJavascript, loadHTML, loadUrl
 }
 
-class InteractiveWebviewPlugin(private val activity: Activity): MethodCallHandler {
+class InteractiveWebviewPlugin(activity: Activity): MethodCallHandler {
 
     companion object {
         lateinit var channel: MethodChannel
 
         @JvmStatic
-        fun registerWith(registrar: Registrar): Unit {
+        fun registerWith(registrar: Registrar) {
             channel = MethodChannel(registrar.messenger(), "interactive_webview")
             channel.setMethodCallHandler(InteractiveWebviewPlugin(registrar.activity()))
         }
@@ -157,15 +155,16 @@ class JsInterface {
             message["name"] = "native"
 
             try {
-                val firstChar = it[0]
-                if (firstChar == '{') {
-                    val jsonObj = JSONObject(it)
-                    message["data"] = toMap(jsonObj)
-                } else if (firstChar == '[') {
-                    val jsonArray = JSONArray(it)
-                    message["data"] = toList(jsonArray)
-                } else {
-                    message["data"] = it
+                when (it[0]) {
+                    '{' -> {
+                        val jsonObj = JSONObject(it)
+                        message["data"] = toMap(jsonObj)
+                    }
+                    '[' -> {
+                        val jsonArray = JSONArray(it)
+                        message["data"] = toList(jsonArray)
+                    }
+                    else -> message["data"] = it
                 }
             } catch (e: JSONException) {
                 message["data"] = it
