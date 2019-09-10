@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.webkit.JavascriptInterface
 import android.webkit.WebResourceRequest
@@ -169,7 +171,9 @@ class JsInterface {
                 message["data"] = it
             }
 
-            InteractiveWebviewPlugin.channel.invokeMethod("didReceiveMessage", message)
+            Handler(Looper.getMainLooper()).post {
+                InteractiveWebviewPlugin.channel.invokeMethod("didReceiveMessage", message)
+            }
         }
     }
 
