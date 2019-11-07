@@ -69,7 +69,7 @@ class InteractiveWebviewPlugin(activity: Activity): MethodCallHandler {
             CallMethod.loadUrl -> loadUrl(call)
         }
 
-        result(null)
+        result.success()
     }
 
     private fun setOptions(call: MethodCall) {
