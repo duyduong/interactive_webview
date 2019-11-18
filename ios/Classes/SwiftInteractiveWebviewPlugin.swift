@@ -34,6 +34,8 @@ public class SwiftInteractiveWebviewPlugin: NSObject, FlutterPlugin {
         case .loadHTML: loadHTML(call)
         case .loadUrl: loadUrl(call)
         }
+
+        result(nil)
     }
     
     init(withChannel channel: FlutterMethodChannel) {
