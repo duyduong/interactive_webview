@@ -13,9 +13,9 @@ class InteractiveWebView {
   Stream<WebViewStateChanged> get stateChanged => _stateChanged.stream;
   Stream<WebkitMessage> get didReceiveMessage => _didReceiveMessage.stream;
 
-  static InteractiveWebView _instance;
+  static InteractiveWebView _instance = InteractiveWebView._();
 
-  factory InteractiveWebView() => _instance ??= new InteractiveWebView._();
+  factory InteractiveWebView() => _instance;
 
   InteractiveWebView._() {
     _channel.setMethodCallHandler(_handleMessages);
@@ -33,7 +33,7 @@ class InteractiveWebView {
     }
   }
 
-  Future<Null> setOptions({List<String> restrictedSchemes, String webkitHandler}) async {
+  Future<Null> setOptions({List<String>? restrictedSchemes, String? webkitHandler}) async {
     final args = <String, dynamic> {
       'restrictedSchemes': restrictedSchemes ?? <String>[],
     };
@@ -49,7 +49,7 @@ class InteractiveWebView {
     await _channel.invokeMethod('evalJavascript', args);
   }
 
-  Future<Null> loadHTML(String html, {String baseUrl}) async {
+  Future<Null> loadHTML(String html, {String? baseUrl}) async {
     final args = <String, dynamic> {
       'html': html,
     };
@@ -77,7 +77,7 @@ class WebViewStateChanged {
   WebViewStateChanged(this.type, this.url);
 
   factory WebViewStateChanged.fromMap(Map<String, dynamic> map) {
-    WebViewState t;
+    late WebViewState t;
     switch (map['type']) {
       case 'didStart':
         t = WebViewState.didStart;
