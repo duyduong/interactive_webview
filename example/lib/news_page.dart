@@ -11,8 +11,8 @@ class NewsPage extends StatefulWidget {
 class _NewsPageState extends State<NewsPage> {
   final _webView = InteractiveWebView();
 
-  var _tabs = List<TabModel>();
-  var _news = List<NewsModel>();
+  List<TabModel> _tabs = [];
+  List<NewsModel> _news = [];
 
   @override
   void initState() {
@@ -72,7 +72,7 @@ class _NewsPageState extends State<NewsPage> {
           child: _TabBar(
             tabs: _tabs,
             tabIndexChanged: (model) {
-              _webView.evalJavascript("loadNews(`${model.link}`);");
+              _webView.evalJavascript("loadNews(`${model!.link}`);");
             },
           ),
         ),
@@ -91,14 +91,14 @@ class _NewsPageState extends State<NewsPage> {
                   Container(
                     margin: EdgeInsets.only(bottom: 10),
                     child: Image.network(
-                      _news[i].thumbnail,
+                      _news[i].thumbnail!,
                       fit: BoxFit.contain,
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.only(bottom: 5),
                     child: Text(
-                      _news[i].title,
+                      _news[i].title!,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class _NewsPageState extends State<NewsPage> {
                     ),
                   ),
                   Text(
-                    _news[i].desc,
+                    _news[i].desc!,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -124,8 +124,8 @@ class _NewsPageState extends State<NewsPage> {
 }
 
 class _TabBar extends StatefulWidget {
-  final List<TabModel> tabs;
-  final Function(TabModel) tabIndexChanged;
+  final List<TabModel?>? tabs;
+  final Function(TabModel?)? tabIndexChanged;
 
   const _TabBar({this.tabs, this.tabIndexChanged});
 
@@ -134,13 +134,13 @@ class _TabBar extends StatefulWidget {
 }
 
 class _TabBarState extends State<_TabBar> {
-  TabModel _selectedTab;
+  TabModel? _selectedTab;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: widget.tabs
+      children: widget.tabs!
           .asMap()
           .map((i, tab) {
             return MapEntry(
@@ -149,10 +149,10 @@ class _TabBarState extends State<_TabBar> {
                 child: _Tab(
                   isSelected: _selectedTab == null
                       ? i == 0
-                      : widget.tabs.indexOf(_selectedTab) == i,
+                      : widget.tabs!.indexOf(_selectedTab) == i,
                   model: tab,
                   onPressed: () {
-                    widget.tabIndexChanged(tab);
+                    widget.tabIndexChanged!(tab);
 
                     setState(() {
                       _selectedTab = tab;
@@ -169,9 +169,9 @@ class _TabBarState extends State<_TabBar> {
 }
 
 class _Tab extends StatelessWidget {
-  final TabModel model;
-  final bool isSelected;
-  final VoidCallback onPressed;
+  final TabModel? model;
+  final bool? isSelected;
+  final VoidCallback? onPressed;
 
   const _Tab({this.isSelected, this.model, this.onPressed});
 
@@ -180,8 +180,8 @@ class _Tab extends StatelessWidget {
     return FlatButton(
       onPressed: onPressed,
       child: Text(
-        model.name.toUpperCase(),
-        style: TextStyle(color: isSelected ? Colors.greenAccent : Colors.white),
+        model!.name!.toUpperCase(),
+        style: TextStyle(color: isSelected! ? Colors.greenAccent : Colors.white),
       ),
     );
   }
