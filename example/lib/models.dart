@@ -1,5 +1,5 @@
 class ScriptDataModel {
-  final String action;
+  final String? action;
   final dynamic data;
 
   ScriptDataModel({this.action, this.data});
@@ -10,8 +10,8 @@ class ScriptDataModel {
 }
 
 class TabModel {
-  final String link;
-  final String name;
+  final String? link;
+  final String? name;
 
   TabModel({this.link, this.name});
 
@@ -21,9 +21,9 @@ class TabModel {
 }
 
 class NewsModel {
-  final String thumbnail;
-  final String title;
-  final String desc;
+  final String? thumbnail;
+  final String? title;
+  final String? desc;
 
   NewsModel({this.thumbnail, this.title, this.desc});
 
