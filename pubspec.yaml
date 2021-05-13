@@ -1,11 +1,11 @@
-name: interactive_webview
+name: interactive_webview_null_safety
 description: Plugin that allow Flutter to communicate with a native WebView.
-version: 0.1.2
-author: Dao Duy Duong <dduy.duong@gmail.com>
+version: 0.2.0
 homepage: https://github.com/duyduong/interactive_webview
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.17.0"
 
 dependencies:
   flutter:
@@ -13,5 +13,7 @@ dependencies:
 
 flutter:
   plugin:
-    androidPackage: com.nover.interactivewebview
-    pluginClass: InteractiveWebviewPlugin
+    platforms:
+      android:
+        package: com.nover.interactivewebview
+        pluginClass: InteractiveWebviewPlugin
